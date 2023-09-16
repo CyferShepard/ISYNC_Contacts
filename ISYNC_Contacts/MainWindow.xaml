@@ -1,0 +1,171 @@
+﻿<Window x:Class="ISYNC_Contacts.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ISYNC_Contacts"
+        mc:Ignorable="d"
+        Title="Contacts Manager" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Contacts">
+
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Width="670">
+
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        
+                        <!--Filter code START-->
+                        <Label Content="Name"  FontWeight="DemiBold" Grid.Row="0" Grid.Column="0"  Margin="-5,0,0,0"/>
+                        <TextBox x:Name="filterNameInput"  Grid.Row="1" Grid.Column="0" Width="200" MaxLength="50" MaxLines="1"  Margin="0,5,0,0"/>
+
+
+                        <Label Content="Category"  FontWeight="DemiBold" Grid.Row="0" Grid.Column="1" Margin="5,0,0,0"/>
+                        <ComboBox x:Name="FilterCategoryInput"  Text="Active" Grid.Row="1" Grid.Column="1"  Width="150" Margin="10,5,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+
+                        <Label Content="Active"  FontWeight="DemiBold" Grid.Row="0" Grid.Column="2" Margin="5,0,0,0"/>
+                        <ComboBox x:Name="filterActiveInput" Text="Active" Grid.Row="1" Grid.Column="2"  Width="150" Margin="10,5,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Button Content="Add Contact" Cursor="Hand" Width="100" Height="25"  Click="OnClick_AddContacts" Grid.Row="1" Grid.Column="3" Margin="10,0,0,0">
+                            <Button.Foreground>
+                                <SolidColorBrush Color="White" />
+                            </Button.Foreground>
+                            <Button.FontSize>14</Button.FontSize>
+                            <Button.FontWeight>Bold</Button.FontWeight>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="Green"
+                                        CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!--<Button Content="Filter" Cursor="Hand" Width="100" Height="25" Click="OnClick_FilterContacts" Grid.Row="1" Grid.Column="3" Margin="10,5,0,0">
+                            <Button.Foreground>
+                                <SolidColorBrush Color="White" />
+                            </Button.Foreground>
+                            <Button.FontSize>14</Button.FontSize>
+                            <Button.FontWeight>Bold</Button.FontWeight>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="DodgerBlue"
+                                        CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>-->
+                        <!--Filter code END-->
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="4"  Margin="0,20,0,0">
+
+                            <ListBox x:Name="ContactsDataGrid" SelectionChanged="contact_SelectionChanged">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter" />
+                                        <EventSetter Event="MouseLeave" Handler="ListBoxItem_MouseLeave" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate >
+                                    <DataTemplate>
+                                        <Grid Margin="0,5,5,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*" MinWidth="200"/>
+                                                <ColumnDefinition Width="*" MinWidth="200"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Image x:Name="imageControl" Source="{Binding Image}" RenderOptions.EdgeMode="Aliased"  Width="100" Height="100"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Margin="0,0,15,0"/>
+
+                                            <TextBlock Text="{Binding FirstName}" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="0"/>
+                                            <TextBlock Text="{Binding LastName}" FontSize="18" FontWeight="Bold" Grid.Column="2" Grid.Row="0"/>
+                                            <TextBlock Text="{Binding EMail}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1"/>
+                                            <TextBlock Text="{Binding CellNumber}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1"/>
+                                            <TextBlock Text="{Binding DateOfBirth, StringFormat='Date of Birth: {0:dd/MM/yyyy}', FallbackValue='Date of Birth: N/A'}" FontStyle="Italic" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1"/>
+                                            <TextBlock x:Name="activeStatus"  FontStyle="Italic" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="1">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Active}" Value="true">
+                                                                <Setter Property="Text" Value="Active" />
+                                                                <Setter Property="Foreground" Value="Green" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Active}" Value="false">
+                                                                <Setter Property="Text" Value="Inactive" />
+                                                                <Setter Property="Foreground" Value="Red" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
+                                            <Button Content="Delete" Tag="{Binding ID}" Width="100" Height="25" Click="OnClick_DeleteContact" Grid.Row="1" Grid.Column="3" Margin="10,5,0,0">
+                                                <Button.Foreground>
+                                                    <SolidColorBrush Color="White" />
+                                                </Button.Foreground>
+                                                <Button.FontSize>14</Button.FontSize>
+                                                <Button.FontWeight>Bold</Button.FontWeight>
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="red"
+                                                                CornerRadius="5">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+
+                                </ListBox.ItemTemplate>
+
+                            </ListBox>
+                        </ScrollViewer>
+
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Categories">
+                <Frame x:Name="categoriesFrame" NavigationUIVisibility="Hidden" />
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
