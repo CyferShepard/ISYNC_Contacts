@@ -36,6 +36,13 @@ namespace ISYNC_Contacts
             _categoryLogic = serviceProvider.GetRequiredService<ICategoryLogic>();
             _contactLogic= serviceProvider.GetRequiredService<IContactsLogic>();
             Loaded += OnMainWindowLoaded;
+            //resize grid view
+            SizeChanged += MainWindow_SizeChanged;
+        }
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double newHeight = e.NewSize.Height;
+            CategoryDataGrid.Height = newHeight - 100;
         }
 
         private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
