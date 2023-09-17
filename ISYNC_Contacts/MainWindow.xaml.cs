@@ -141,7 +141,7 @@ namespace ISYNC_Contacts
         {
             try
             {
-                IEnumerable<Categories> AllCategories = (IEnumerable<Categories>)await _categoryLogic.GetCategories();
+                List<Categories> AllCategories = ((List<Categories>)await _categoryLogic.GetCategories()).Where(category => category.Active).ToList();
                 FilterCategoryInput.ItemsSource = AllCategories;
                 FilterCategoryInput.SelectedIndex = 0;
                 FilterCategoryInput.SelectionChanged += ComboBox_SelectionChanged;

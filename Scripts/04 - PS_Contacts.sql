@@ -29,7 +29,7 @@ BEGIN
 	WHERE co.Active=ISNULL(@Active,co.Active)
 	AND co.ID=IIF(@ID>0,@ID,co.ID)
 	AND FirstName like '%'+ISNULL(@FirstName,FirstName)+'%'
-	AND CategoryId = ISNULL(IIF(@CategoryId>1,@CategoryId,CategoryId),CategoryId)
+	AND CategoryId = IIF(@CategoryId>1 AND @CategoryId IS NOT NULL,@CategoryId,CategoryId)
 	AND LOWER(EMail) like '%'+ISNULL(@EMail,LOWER(EMail))+'%'
 
 

@@ -146,7 +146,7 @@ namespace ISYNC_Contacts
         {
             try
             {
-                IEnumerable<Categories> AllCategories = (IEnumerable<Categories>)await _categoryLogic.GetCategories();
+                List<Categories> AllCategories = ((List<Categories>)await _categoryLogic.GetCategories()).Where(category => category.Active || category.ID==_contact.CategoryId).ToList();
                 CategoryInput.ItemsSource = AllCategories;
             }
             catch (Exception ex)
