@@ -191,7 +191,7 @@ namespace ISYNC_Contacts
                 _contact.LastName = LastNameInput.Text;
                 _contact.DateOfBirth = DOBInput.SelectedDate ?? DateTime.Now;
                 _contact.CellNumber = CellInput.Text;
-                _contact.EMail = EmailInput.Text;
+                string EMail = EmailInput.Text;
 
                 if (ActiveInput.SelectedItem is ActiveState selectedActiveState)
                 {
@@ -214,7 +214,7 @@ namespace ISYNC_Contacts
 
                 }
 
-                if (String.IsNullOrEmpty(_contact.FirstName) || String.IsNullOrEmpty(_contact.LastName) || String.IsNullOrEmpty(_contact.EMail))
+                if (String.IsNullOrEmpty(_contact.FirstName) || String.IsNullOrEmpty(_contact.LastName) || String.IsNullOrEmpty(EMail))
                 {
                     MessageBox.Show($"Error: 1 or More Required fields are blank", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -234,7 +234,7 @@ namespace ISYNC_Contacts
                 //validate email input
                 string emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 
-                bool isValidEmail = Regex.IsMatch(_contact.EMail, emailRegex);
+                bool isValidEmail = Regex.IsMatch(EMail, emailRegex);
 
                 if (!isValidEmail)
                 {
@@ -243,15 +243,15 @@ namespace ISYNC_Contacts
                 }
 
                 Contacts_Search_Params search_params = new Contacts_Search_Params();
-                search_params.EMail = _contact.EMail.ToLowerInvariant();
+                search_params.EMail = EMail.ToLowerInvariant();
                 List<Contacts> email_exists = (List<Contacts>) await _contactsLogic.GetContacts(search_params);
 
-                if (email_exists.Count() > 0 && !EditMode)
+                if (email_exists.Count() > 0 && !_contact.EMail.ToLowerInvariant().Equals(EMail.ToLowerInvariant()))
                 {
                     MessageBox.Show($"Error: Email already exists in the Contact List", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-
+                _contact.EMail = EmailInput.Text; ;
 
                 if (EditMode)
                 {
